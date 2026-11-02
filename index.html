@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="dark">
     <title>DeepMind</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="vendor/alertifyjs/alertify.css">
     <link rel="stylesheet" href="vendor/alertifyjs/default.css">
+    <link rel="stylesheet" href="vendor/katex/katex.min.css">
     <style>
         :root {
             font-family: "Segoe UI", system-ui, sans-serif;
@@ -136,6 +138,8 @@
         .answer-text { white-space: normal; }
         .answer-text p { margin: 0 0 1em; }
         .answer-text p:last-child { margin-bottom: 0; }
+        .answer-text .katex-display { max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: .2em 0; }
+        .answer-text .katex { font-size: 1.05em; }
         .answer-text h1, .answer-text h2, .answer-text h3, .answer-text h4, .answer-text h5, .answer-text h6 { line-height: 1.35; margin: 1.2em 0 .55em; letter-spacing: -.3px; }
         .answer-text h1 { font-size: 1.55em; }
         .answer-text h2 { font-size: 1.35em; }
@@ -455,6 +459,7 @@
         </main>
     </div>
     <script src="vendor/alertifyjs/alertify.js"></script>
+    <script src="vendor/katex/katex.min.js"></script>
     <script>
         window.alertify.defaults.notifier.position = 'top-right';
         window.alertify.defaults.notifier.delay = 4;
@@ -951,14 +956,33 @@
         }
 
         function appendInlineMarkdown(container, text) {
-            const pattern = /(`+)([\s\S]+?)\1|\*\*([\s\S]+?)\*\*|\*([^*\n]+)\*/g;
+            const pattern = /(`+)([\s\S]+?)\1|\\\[([\s\S]*?)\\\]|\\\(([\s\S]*?)\\\)|\$\$([\s\S]*?)\$\$|\$([^\n$]+?)\$|\*\*([\s\S]+?)\*\*|\*([^*\n]+)\*/g;
             let lastIndex = 0;
             let match;
             while ((match = pattern.exec(text)) !== null) {
                 container.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
-                const element = document.createElement(match[1] ? 'code' : match[3] ? 'strong' : 'em');
-                element.textContent = match[1] ? match[2].replace(/\n/g, ' ') : (match[3] || match[4]);
-                container.appendChild(element);
+                if (match[1]) {
+                    const code = document.createElement('code');
+                    code.textContent = match[2].replace(/\n/g, ' ');
+                    container.appendChild(code);
+                } else if (match[3] !== undefined || match[4] !== undefined || match[5] !== undefined || match[6] !== undefined) {
+                    const display = match[3] !== undefined || match[5] !== undefined;
+                    const expression = match[3] !== undefined ? match[3]
+                        : match[4] !== undefined ? match[4]
+                            : match[5] !== undefined ? match[5] : match[6];
+                    const renderedMath = document.createElement('template');
+                    renderedMath.innerHTML = katex.renderToString(expression, {
+                        displayMode: display,
+                        output: 'html',
+                        throwOnError: false,
+                        strict: 'ignore'
+                    });
+                    container.appendChild(renderedMath.content);
+                } else {
+                    const element = document.createElement(match[7] ? 'strong' : 'em');
+                    element.textContent = match[7] || match[8];
+                    container.appendChild(element);
+                }
                 lastIndex = pattern.lastIndex;
             }
             container.appendChild(document.createTextNode(text.slice(lastIndex)));
