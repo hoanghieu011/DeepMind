@@ -1,0 +1,16 @@
+ollama rm gemma4:e2b
+
+Chạy model	
+ollama run gemma4:e2b
+
+Xem model đang chạy	
+ollama ps
+
+Dừng model	
+ollama stop gemma4:e2b
+
+Xem model đã cài	
+ollama list
+
+Thoát phiên chat
+/bye

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Rắn săn mồi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    canvas {
+      border: 2px solid #333;
+      background: #fff;
+      margin: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    #score {
+      font-size: 2.5em;
+      color: #007BFF;
+      margin-top: 10px;
+    }
+    #enemy {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: green;
+      border-radius: 50%;
+      animation: spin 1s infinite;
+      z-index: 1;
+    }
+    #items {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    #items button {
+      background: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="gameCanvas"></canvas>
+
+  <div id="score">Score: 0</div>
+
+  <div id="enemy">Enemy</div>
+
+  <div id="items">
+    <button onclick="useItem('knife')">Sử dụng kiếm</button>
+    <button onclick="useItem('sword')">Sử dụng đạn</button>
+    <button onclick="useItem('torch')">Sử dụng lựu</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Game variables
+    let player = {
+      x: 100,
+      y: 100,
+      width: 40,
+      height: 40,
+      color: 'green'
+    };
+    let enemies = [];
+    let items = ['knife', 'sword', 'torch'];
+    let score = 0;
+    let isGameOver = false;
+
+    // Game loop
+    function gameLoop() {
+      // Update game elements
+      updateGame();
+      renderGame();
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Update game logic
+    function updateGame() {
+      // Update player position
+      if (keys['arrowLeft'] || keys['arrowRight']) {
+        player.x += keys['arrowLeft'] ? -player.width : player.width;
+      }
+
+      // Check for collision
+      enemies.forEach(enemy => {
+        if (isCollidingWithPlayer(player, enemy)) {
+          score++;
+          alert(`Bạn đã giết ${enemy}!`);
+          if (score > 5) {
+            alert("Bạn đã chiến thắng!");
+            isGameOver = true;
+          }
+        }
+      });
+    }
+
+    // Render game
+    function renderGame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw player
+      ctx.fillStyle = player.color;
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+
+      // Draw enemies
+      enemies.forEach(enemy => {
+        ctx.fillStyle = 'red';
+        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+      });
+
+      // Draw score
+      ctx.fillStyle = '#007BFF';
+      ctx.font = '20px Arial';
+      ctx.fillText(`Score: ${score}`, 10, 20);
+
+      // Draw items
+      items.forEach(item => {
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(50 + (item === 'knife' ? 10 : 0), 50 + (item === 'sword' ? 10 : 0), 40, 40);
+      });
+    }
+
+    // Handle keyboard input
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        // Move player
+        player.x = e.key === 'ArrowLeft' ? player.x - 10 : player.x + 10;
+      }
+    });
+
+    // Handle item usage
+    document.addEventListener('click', (e) => {
+      if (e.target.textContent === 'knife') {
+        alert('Bạn sử dụng kiếm!'); // Simplified action
+      } else if (e.target.textContent === 'sword') {
+        alert('Bạn sử dụng đạn!'); // Simplified action
+      }
+    });
+
+    // Start game
+    gameLoop();
+  </script>
+
+</body>
+</html>
