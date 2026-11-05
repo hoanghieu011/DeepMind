@@ -1746,7 +1746,7 @@
             let displayedThinking = '';
             let hasResponseContent = false;
             try {
-                const response = await fetch('https://matthew-murdock.tail559f06.ts.net/api/chat', {
+                const response = await fetch('https://matthew-murdock.leopon-uaru.ts.net/api/chat', {
                     method: 'POST',
                     signal: controller.signal,
                     headers: { 'Content-Type': 'application/json' },
@@ -1827,7 +1827,7 @@
                     notify('warning', 'Đã dừng · Tin nhắn chưa được thêm vào lịch sử');
                 } else {
                     const detail = error instanceof TypeError
-                        ? 'Không thể đọc phản hồi từ Ollama. Hãy kiểm tra Ollama đang chạy tại https://matthew-murdock.tail559f06.ts.net và cho phép truy cập từ trang này.'
+                        ? 'Không thể đọc phản hồi từ Ollama. Hãy kiểm tra Ollama đang chạy tại https://matthew-murdock.leopon-uaru.ts.net và cho phép truy cập từ trang này.'
                         : error.message;
                     if (!messageInput.value) messageInput.value = userText;
                     notify('error', 'Gửi không thành công · ' + detail);
