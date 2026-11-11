@@ -381,7 +381,7 @@
             <header class="header">
                 <div>
                     <div class="header-title">DeepMind</div>
-                    <div class="model-settings" role="group" aria-label="Mô hình Ollama hiện tại"><span>Đang dùng</span><span class="model-name">openbmb/minicpm5-2b</span></div>
+                    <div class="model-settings" role="group" aria-label="Mô hình Ollama hiện tại"><span>Đang dùng</span><span class="model-name">gpt-oss:20b</span></div>
                 </div>
                 <div class="header-actions">
                     <button class="mobile-menu" id="mobile-menu" type="button" aria-label="Mở menu lịch sử" aria-controls="sidebar" aria-expanded="false"><svg class="icon" aria-hidden="true"><use href="#menu"/></svg></button>
@@ -496,7 +496,7 @@
         const allowedImageTypes = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/gif']);
         const maxImageSize = 100 * 1024 * 1024;
         const maxImageBase64Length = 4 * Math.ceil(maxImageSize / 3);
-        const modelName = 'openbmb/minicpm5-2b';
+        const modelName = 'gpt-oss:20b';
         let isSending = false;
         let isReadingImage = false;
         let activeController = null;
@@ -1855,7 +1855,7 @@
         renderConversation();
         renderConversationList();
         if (loadedState.shouldSave && persistState() && loadedState.modelMigrated) {
-            notify('message', 'Cấu hình mô hình cũ đã được chuyển sang openbmb/minicpm5-2b.');
+            notify('message', 'Cấu hình mô hình cũ đã được chuyển sang gpt-oss:20b.');
         }
         updateComposer();
         updateScrollNavigation();
