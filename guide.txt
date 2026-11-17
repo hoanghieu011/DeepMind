@@ -1,21 +1,18 @@
-ollama rm gemma4:e2b
+DeepMind gọi Groq API trực tiếp từ trình duyệt; không cần Node.js hay backend.
 
-Chạy model	
-ollama run gemma4:e2b
-ollama run rafw007/gemma4-e2b-claude-coder
+Cách dùng
+1. Mở ứng dụng trên HTTPS hoặc localhost.
+2. Mở mục “Cấu hình Groq” ở thanh bên.
+3. Nhập API key từ Groq Cloud Console, chọn model và nhấn “Lưu cấu hình”.
+4. Gửi tin nhắn. Model mặc định là openai/gpt-oss-120b.
 
-Xem model đang chạy	
-ollama ps
+API key và model được lưu trong localStorage của trình duyệt và tự nạp lại lần sau. Nút “Xóa key” gỡ key khỏi cấu hình đã lưu. Có thể đổi model trong mục cấu hình; các model cần có trong tài khoản Groq và còn được Groq hỗ trợ. Phân tích ảnh hiện chỉ bật với qwen/qwen3.8-27b.
 
-Dừng model	
-ollama stop gemma4:e2b
-ollama stop rafw007/gemma4-e2b-claude-coder
+Bảo mật
+- API key nằm dạng văn bản trong localStorage và được gửi từ trình duyệt trong header Authorization. JavaScript chạy cùng origin, tiện ích có quyền truy cập, DevTools hoặc người dùng khác cùng hồ sơ trình duyệt có thể đọc key.
+- Chỉ dùng trên thiết bị cá nhân đáng tin cậy; cân nhắc key riêng có giới hạn/quota, và xóa hoặc thu hồi key khi không còn dùng. Không nhúng key cố định vào source hoặc chia sẻ trình duyệt đã lưu key.
+- Tin nhắn và ảnh được gửi trực tiếp tới Groq. Lịch sử hội thoại vẫn lưu trong localStorage của thiết bị.
 
-Xem model đã cài	
-ollama list
-
-Thoát phiên chat
-/bye
-
-cd "C:\Users\Hieu\Desktop\Code\baocao\_xml\api"
-ollama launch claude --model rafw007/gemma4-e2b-claude-coder
+Giới hạn trình duyệt
+- Preflight CORS tới https://api.groq.com/openai/v1/chat/completions được kiểm tra và trả về 204 với Access-Control-Allow-Origin: * cùng các header authorization,content-type; vì vậy fetch trực tiếp hoạt động trên trình duyệt hiện tại. Trình duyệt, tiện ích chặn mạng hoặc thay đổi CORS phía Groq vẫn có thể chặn request.
+- Nên mở trang qua HTTPS hoặc localhost. Không tắt bảo vệ CORS hay dùng extension để vượt lỗi CORS; nếu chính sách API thay đổi, ứng dụng browser-only sẽ không thể tự khắc phục mà không có proxy.

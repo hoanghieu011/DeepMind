@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="dark">
-    <title>DeepMind</title>
+    <title>DeepMind · Groq</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="vendor/alertifyjs/alertify.css">
     <link rel="stylesheet" href="vendor/alertifyjs/default.css">
@@ -101,6 +101,22 @@
         .conversation-edit-actions { display: flex; flex: none; gap: 3px; }
         .conversation-edit-action { min-height: 30px; border: 1px solid #b8d0cc; border-radius: 7px; padding: 0 6px; background: #f5f8f2; color: #315964; font-size: 10px; }
         .conversation-edit-action:hover { background: #e3eee8; }
+        .api-settings { flex: none; margin-top: 15px; overflow: hidden; border: 1px solid #bfd6d1; border-radius: 14px; background: var(--surface-soft); }
+        .api-settings summary { cursor: pointer; padding: 11px 12px; color: #244f5d; font-size: 12px; font-weight: 700; }
+        .api-settings-fields { display: grid; gap: 8px; padding: 0 11px 12px; }
+        .api-settings-fields label { color: #315964; font-size: 11px; font-weight: 650; }
+        .api-settings-fields input, .api-settings-fields select { width: 100%; min-width: 0; border: 1px solid #b8d0cc; border-radius: 8px; padding: 8px; background: #f5f8f2; color: #183746; font: inherit; font-size: 11px; }
+        .api-key-row { display: flex; gap: 5px; }
+        .api-key-row input { flex: 1; }
+        .api-key-visibility, .api-settings-button { min-height: 32px; border: 1px solid #b8d0cc; border-radius: 8px; padding: 5px 8px; background: #f5f8f2; color: #315964; font-size: 10px; }
+        .api-key-visibility:hover, .api-settings-button:hover { background: white; }
+        .api-settings-note, .api-settings-warning, .api-settings-status { margin: 0; font-size: 10px; line-height: 1.45; overflow-wrap: anywhere; }
+        .api-settings-note { color: #526b73; }
+        .api-settings-warning { border-left: 2px solid #d59a50; padding-left: 7px; color: #76521f; }
+        .api-settings-actions { display: flex; gap: 6px; }
+        .api-settings-button.primary { border-color: #087487; background: #087487; color: white; font-weight: 700; }
+        .api-settings-button:disabled { cursor: not-allowed; opacity: .55; }
+        .api-settings-status { min-height: 1.4em; color: #526b73; }
         .sidebar-note { margin: 16px 4px; padding: 0 8px; color: #405e65; font-size: 12px; line-height: 1.65; }
         .sidebar-note strong { display: block; margin-bottom: 4px; color: #244f5d; font-weight: 700; }
         .local-card { margin-top: auto; padding: 13px 12px 0; border-top: 1px solid #b8d1cc; color: #405e65; font-size: 11px; line-height: 1.6; }
@@ -150,6 +166,13 @@
         .answer-text li + li { margin-top: .25em; }
         .answer-text blockquote { margin: .7em 0 1em; padding: 2px 0 2px 14px; border-left: 3px solid #7bb4b4; color: #4e6b73; }
         .answer-text blockquote p { margin-bottom: .5em; }
+        .answer-text .table-scroll { max-width: 100%; margin: 14px 0 18px; overflow-x: auto; overscroll-behavior-x: contain; border: 1px solid #c5d8d5; border-radius: 12px; background: #f5f8f4; -webkit-overflow-scrolling: touch; }
+        .answer-text table.markdown-table { width: max-content; min-width: 100%; border-collapse: separate; border-spacing: 0; color: #254754; font-size: .86em; line-height: 1.55; }
+        .answer-text table.markdown-table th, .answer-text table.markdown-table td { min-width: 92px; max-width: 420px; padding: 9px 12px; border-right: 1px solid #c5d8d5; border-bottom: 1px solid #c5d8d5; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+        .answer-text table.markdown-table th { background: #dcebe5; color: #153f4d; font-weight: 700; }
+        .answer-text table.markdown-table tbody tr:nth-child(even) td { background: #edf4ef; }
+        .answer-text table.markdown-table tr > :last-child { border-right: 0; }
+        .answer-text table.markdown-table tbody tr:last-child td { border-bottom: 0; }
         .answer-text :not(pre) > code { padding: .12em .35em; border-radius: 5px; background: #dfece6; color: #124e5e; font-family: Consolas, "Courier New", monospace; font-size: .9em; }
         .code-block { margin: 14px 0; overflow: hidden; border: 1px solid #315767; border-radius: 13px; background: #163846; color: #edf8f7; box-shadow: 0 8px 20px #153d4b18; }
         .code-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 7px 10px 7px 14px; border-bottom: 1px solid #355966; color: #c0dcde; font-size: 11px; }
@@ -247,6 +270,9 @@
             .local-badge { display: none; }
             .keyboard-hint { display: none; }
             .copy-code { padding-inline: 7px; }
+            .answer-text .table-scroll { margin: 12px 0 16px; }
+            .answer-text table.markdown-table { font-size: .8em; }
+            .answer-text table.markdown-table th, .answer-text table.markdown-table td { min-width: 80px; max-width: 260px; padding: 7px 9px; }
         }
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
         :root { color-scheme: dark; color: #edf5f2; background: #0b1c25; --muted: #b0c5c6; --line: #35535b; --accent: #76d0d6; --surface: #122a34; --surface-soft: #1b3942; --sand: #493e30; }
@@ -280,6 +306,14 @@
         .conversation-edit-error { color: #ffb8b4; }
         .conversation-edit-action { border-color: #4a6b71; background: #25454d; color: #e9f2ef; }
         .conversation-edit-action:hover { background: #31555d; }
+        .api-settings { border-color: #35545c; background: #1a353e; }
+        .api-settings summary, .api-settings-fields label { color: #f1d49b; }
+        .api-settings-fields input, .api-settings-fields select { border-color: #45656b; background: #112d37; color: #f1f7f4; }
+        .api-key-visibility, .api-settings-button { border-color: #45656b; background: #25454d; color: #e9f2ef; }
+        .api-key-visibility:hover, .api-settings-button:hover { background: #31555d; }
+        .api-settings-note, .api-settings-status { color: #b0c5c6; }
+        .api-settings-warning { border-color: #e4c47f; color: #f0d496; }
+        .api-settings-button.primary { border-color: #0c8b9b; background: #0c7181; color: #fff; }
         .sidebar-note, .local-card { color: #c3d2cf; }
         .local-card { border-color: #45605f; }
         .main { background: radial-gradient(ellipse at 82% 9%, #1c414a 0%, transparent 36%), linear-gradient(145deg, #0d2029 0%, #132d36 56%, #40372b 100%); }
@@ -297,6 +331,11 @@
         .message-content { color: #e5efec; }
         .answer-text hr { border-color: #385b61; }
         .answer-text blockquote { border-color: #5da7a7; color: #bed0cd; }
+        .answer-text .table-scroll { border-color: #35565f; background: #132d37; }
+        .answer-text table.markdown-table { color: #d8e6e2; }
+        .answer-text table.markdown-table th, .answer-text table.markdown-table td { border-color: #35565f; }
+        .answer-text table.markdown-table th { background: #21434a; color: #f0f7f4; }
+        .answer-text table.markdown-table tbody tr:nth-child(even) td { background: #193640; }
         .answer-text :not(pre) > code { background: #24434a; color: #b6eae5; }
         .code-block { border-color: #35565f; background: #091b24; color: #e8f4f1; box-shadow: 0 8px 20px #00000035; }
         .code-header { border-color: #304c54; color: #b8d5d3; }
@@ -344,7 +383,7 @@
     <div class="app">
         <aside class="sidebar" id="sidebar" aria-label="Menu lịch sử trò chuyện">
             <div class="sidebar-brand-row">
-                <div class="brand"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#spark"/></svg></span> DeepMind <small>LOCAL</small></div>
+                <div class="brand"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#spark"/></svg></span> DeepMind <small>GROQ</small></div>
                 <button class="sidebar-close" id="sidebar-close" type="button" aria-label="Đóng menu lịch sử"><svg class="icon" aria-hidden="true"><use href="#close"/></svg></button>
             </div>
             <div class="sidebar-scene" aria-hidden="true">
@@ -363,6 +402,30 @@
                     <g class="bird-flock flock-two"><path d="M8 62 Q13 56 18 62 Q23 56 28 62 M43 37 Q47 32 51 37 Q55 32 59 37 M70 49 Q75 43 80 49 Q85 43 90 49"/></g>
                 </svg>
             </div>
+            <details class="api-settings" id="api-settings">
+                <summary>Cấu hình Groq</summary>
+                <div class="api-settings-fields">
+                    <label for="groq-api-key">Groq API key</label>
+                    <div class="api-key-row">
+                        <input id="groq-api-key" type="password" maxlength="512" autocomplete="off" spellcheck="false" placeholder="Nhập API key">
+                        <button class="api-key-visibility" id="toggle-groq-key" type="button" aria-label="Hiện API key">Hiện</button>
+                    </div>
+                    <label for="groq-model">Model</label>
+                    <select id="groq-model">
+                        <option value="openai/gpt-oss-120b" selected>openai/gpt-oss-120b · GPT OSS 120B</option>
+                        <option value="openai/gpt-oss-20b">openai/gpt-oss-20b · GPT OSS 20B</option>
+                        <option value="qwen/qwen3.8-27b">qwen/qwen3.8-27b · Qwen 3.8 27B (ảnh)</option>
+                        <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile · Llama 3.3 70B</option>
+                    </select>
+                    <p class="api-settings-note" id="groq-model-note"></p>
+                    <p class="api-settings-warning">API key được lưu dạng văn bản trong localStorage, không được mã hóa. Chỉ dùng trên thiết bị cá nhân đáng tin cậy; mã chạy cùng trang có thể đọc key.</p>
+                    <div class="api-settings-actions">
+                        <button class="api-settings-button primary" id="save-groq-settings" type="button">Lưu cấu hình</button>
+                        <button class="api-settings-button" id="clear-groq-key" type="button">Xóa key</button>
+                    </div>
+                    <span class="api-settings-status" id="groq-settings-status" role="status" aria-live="polite"></span>
+                </div>
+            </details>
             <button class="new-chat" type="button"><svg class="icon" aria-hidden="true"><use href="#plus"/></svg> Cuộc trò chuyện mới</button>
             <section class="history-tools" aria-labelledby="history-heading">
                 <div class="history-heading" id="history-heading">Lịch sử trò chuyện</div>
@@ -373,19 +436,19 @@
                 <span id="history-selection-status" role="status" aria-live="polite">Chưa có lịch sử đã lưu.</span>
             </section>
             <div class="conversation-list" id="conversation-list" aria-label="Các cuộc trò chuyện đã lưu"></div>
-            <div class="sidebar-note"><strong>Không gian của bạn</strong>Viết, lập trình và khám phá ý tưởng cùng AI chạy trên máy của bạn.</div>
-            <div class="local-card"><strong><svg class="icon" aria-hidden="true"><use href="#device"/></svg> Kết nối qua Ollama</strong>Nội dung chỉ gửi đến AI local. Lịch sử lưu trên thiết bị này.</div>
+            <div class="sidebar-note"><strong>Không gian của bạn</strong>Viết, lập trình và khám phá ý tưởng cùng AI qua Groq.</div>
+            <div class="local-card"><strong><svg class="icon" aria-hidden="true"><use href="#device"/></svg> Kết nối qua Groq API</strong>Tin nhắn được gửi trực tiếp đến Groq. API key, model và lịch sử lưu trên thiết bị này.</div>
         </aside>
         <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="Đóng menu lịch sử" hidden></button>
         <main class="main">
             <header class="header">
                 <div>
                     <div class="header-title">DeepMind</div>
-                    <div class="model-settings" role="group" aria-label="Mô hình Ollama hiện tại"><span>Đang dùng</span><span class="model-name">gpt-oss:20b</span></div>
+                    <div class="model-settings" role="group" aria-label="Model Groq hiện tại"><span>Đang dùng</span><span class="model-name" id="active-groq-model">openai/gpt-oss-120b</span></div>
                 </div>
                 <div class="header-actions">
                     <button class="mobile-menu" id="mobile-menu" type="button" aria-label="Mở menu lịch sử" aria-controls="sidebar" aria-expanded="false"><svg class="icon" aria-hidden="true"><use href="#menu"/></svg></button>
-                    <span class="local-badge"><svg class="icon" aria-hidden="true"><use href="#device"/></svg> Chạy trên máy của bạn</span>
+                    <span class="local-badge"><svg class="icon" aria-hidden="true"><use href="#device"/></svg> Groq Cloud</span>
                     <button class="new-chat mobile-new" type="button" aria-label="Cuộc trò chuyện mới" title="Cuộc trò chuyện mới"><svg class="icon" aria-hidden="true"><use href="#plus"/></svg></button>
                 </div>
             </header>
@@ -484,6 +547,15 @@
         const historySelectionStatus = document.getElementById('history-selection-status');
         const deleteSelectedButton = document.getElementById('delete-selected');
         const deleteAllButton = document.getElementById('delete-all');
+        const apiSettings = document.getElementById('api-settings');
+        const apiKeyInput = document.getElementById('groq-api-key');
+        const toggleApiKeyButton = document.getElementById('toggle-groq-key');
+        const groqModelSelect = document.getElementById('groq-model');
+        const activeGroqModel = document.getElementById('active-groq-model');
+        const groqModelNote = document.getElementById('groq-model-note');
+        const groqSettingsStatus = document.getElementById('groq-settings-status');
+        const saveGroqSettingsButton = document.getElementById('save-groq-settings');
+        const clearGroqKeyButton = document.getElementById('clear-groq-key');
         const thinkingControl = document.getElementById('thinking');
         const imageInput = document.getElementById('image-input');
         const attachImageButton = document.getElementById('attach-image');
@@ -493,10 +565,20 @@
         const imagePreviewName = document.getElementById('image-preview-name');
         const newChatButtons = document.querySelectorAll('.new-chat');
         const storageKey = 'qwen-local-chat-state';
+        const groqSettingsStorageKey = 'deepmind-groq-settings';
+        const defaultGroqModel = 'openai/gpt-oss-120b';
+        const availableGroqModels = new Set([
+            'openai/gpt-oss-120b',
+            'openai/gpt-oss-20b',
+            'qwen/qwen3.8-27b',
+            'llama-3.3-70b-versatile'
+        ]);
         const allowedImageTypes = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/gif']);
         const maxImageSize = 100 * 1024 * 1024;
         const maxImageBase64Length = 4 * Math.ceil(maxImageSize / 3);
-        const modelName = 'gpt-oss:20b';
+        const modelName = 'groq-cloud';
+        let groqApiKey = '';
+        let groqModel = defaultGroqModel;
         let isSending = false;
         let isReadingImage = false;
         let activeController = null;
@@ -527,6 +609,100 @@
             const method = window.alertify[type];
             if (typeof method !== 'function') throw new Error('AlertifyJS notification method is unavailable: ' + type);
             method.call(window.alertify, escapeNotificationHtml(message));
+        }
+
+        function supportsGroqReasoning(model) {
+            return model === 'openai/gpt-oss-120b' ||
+                model === 'openai/gpt-oss-20b' ||
+                model === 'qwen/qwen3.8-27b';
+        }
+
+        function supportsGroqVision(model) {
+            return model === 'qwen/qwen3.8-27b';
+        }
+
+        function loadGroqSettings() {
+            try {
+                const saved = localStorage.getItem(groqSettingsStorageKey);
+                if (saved === null) return { apiKey: '', model: defaultGroqModel, message: '' };
+                const parsed = JSON.parse(saved);
+                if (!parsed || typeof parsed !== 'object') {
+                    return { apiKey: '', model: defaultGroqModel, message: 'Cấu hình Groq đã lưu không hợp lệ; hãy nhập lại API key.' };
+                }
+                return {
+                    apiKey: typeof parsed.apiKey === 'string' ? parsed.apiKey : '',
+                    model: availableGroqModels.has(parsed.model) ? parsed.model : defaultGroqModel,
+                    message: typeof parsed.apiKey === 'string' ? '' : 'Không thể đọc API key đã lưu; hãy nhập lại.'
+                };
+            } catch (error) {
+                return {
+                    apiKey: '',
+                    model: defaultGroqModel,
+                    message: error instanceof SyntaxError
+                        ? 'Cấu hình Groq đã lưu bị hỏng; hãy nhập lại API key.'
+                        : 'Không thể truy cập localStorage để đọc cấu hình Groq.'
+                };
+            }
+        }
+
+        function updateGroqModelNote(model) {
+            const details = [];
+            details.push(supportsGroqVision(model)
+                ? 'Model này hỗ trợ phân tích ảnh.'
+                : 'Phân tích ảnh cần chọn qwen/qwen3.8-27b.');
+            details.push(supportsGroqReasoning(model)
+                ? 'Có thể bật chế độ suy nghĩ.'
+                : 'Model này không hỗ trợ chế độ suy nghĩ.');
+            if (attachedImage && !supportsGroqVision(model)) {
+                details.push('Ảnh đang đính kèm cần model Qwen để gửi.');
+            }
+            groqModelNote.textContent = details.join(' ');
+        }
+
+        function saveGroqSettings() {
+            const apiKey = apiKeyInput.value.trim();
+            const model = groqModelSelect.value;
+            if (!apiKey) {
+                groqSettingsStatus.textContent = 'Hãy nhập Groq API key trước khi lưu.';
+                apiKeyInput.focus();
+                return false;
+            }
+            if (!availableGroqModels.has(model)) {
+                groqSettingsStatus.textContent = 'Model đã chọn không hợp lệ.';
+                return false;
+            }
+            try {
+                localStorage.setItem(groqSettingsStorageKey, JSON.stringify({ apiKey: apiKey, model: model }));
+            } catch (error) {
+                groqSettingsStatus.textContent = error && error.name === 'QuotaExceededError'
+                    ? 'Bộ nhớ trình duyệt đã đầy; không thể lưu cấu hình.'
+                    : 'Không thể lưu cấu hình trong localStorage của trình duyệt.';
+                return false;
+            }
+            groqApiKey = apiKey;
+            groqModel = model;
+            activeGroqModel.textContent = groqModel;
+            updateGroqModelNote(groqModel);
+            apiSettings.open = false;
+            groqSettingsStatus.textContent = 'Đã lưu model và API key trên thiết bị này.';
+            updateComposer();
+            notify('success', 'Đã lưu cấu hình Groq trên thiết bị này.');
+            return true;
+        }
+
+        function clearGroqApiKey() {
+            try {
+                localStorage.setItem(groqSettingsStorageKey, JSON.stringify({ apiKey: '', model: groqModel }));
+            } catch {
+                groqSettingsStatus.textContent = 'Không thể xóa key đã lưu khỏi localStorage.';
+                return false;
+            }
+            groqApiKey = '';
+            apiKeyInput.value = '';
+            apiSettings.open = true;
+            groqSettingsStatus.textContent = 'Đã xóa API key đã lưu.';
+            updateComposer();
+            return true;
         }
 
         function createId() {
@@ -737,11 +913,21 @@
         function buildRequestMessages(conversation, prompt, image) {
             const messages = conversation.messages.map(function (message) {
                 const item = { role: message.role, content: message.content };
-                if (message.role === 'user' && message.image) item.images = [message.image.data];
+                if (message.role === 'user' && message.image) {
+                    item.content = [
+                        { type: 'text', text: message.content },
+                        { type: 'image_url', image_url: { url: safeImageUrl(message.image) } }
+                    ];
+                }
                 return item;
             });
             const userMessage = { role: 'user', content: prompt };
-            if (image) userMessage.images = [image.data];
+            if (image) {
+                userMessage.content = [
+                    { type: 'text', text: prompt },
+                    { type: 'image_url', image_url: { url: safeImageUrl(image) } }
+                ];
+            }
             messages.push(userMessage);
             return messages;
         }
@@ -766,6 +952,7 @@
             attachedImage = null;
             imageInput.value = '';
             renderImagePreview();
+            updateGroqModelNote(groqModel);
             updateComposer();
         }
 
@@ -833,13 +1020,19 @@
         function updateComposer() {
             messageInput.style.height = 'auto';
             messageInput.style.height = Math.min(messageInput.scrollHeight, 180) + 'px';
-            sendButton.disabled = isSending || isReadingImage || (!messageInput.value.trim() && !attachedImage);
+            sendButton.disabled = isSending || isReadingImage ||
+                (attachedImage && !supportsGroqVision(groqModel)) ||
+                (!messageInput.value.trim() && !attachedImage);
             sendButton.hidden = isSending;
             stopButton.hidden = !isSending;
             stopButton.disabled = !activeController || activeController.signal.aborted;
-            attachImageButton.disabled = isSending || isReadingImage;
+            attachImageButton.disabled = isSending || isReadingImage || !supportsGroqVision(groqModel);
+            attachImageButton.title = supportsGroqVision(groqModel)
+                ? 'Đính kèm ảnh để phân tích'
+                : 'Chọn qwen/qwen3.8-27b trong Cấu hình Groq để phân tích ảnh';
             removeImageButton.disabled = isSending || isReadingImage;
-            imageInput.disabled = isSending || isReadingImage;
+            imageInput.disabled = isSending || isReadingImage || !supportsGroqVision(groqModel);
+            thinkingControl.disabled = isSending || !supportsGroqReasoning(groqModel);
             updateHistoryActions();
         }
 
@@ -1024,6 +1217,108 @@
             container.appendChild(document.createTextNode(text.slice(lastIndex)));
         }
 
+        function splitMarkdownTableRow(line) {
+            const trimmed = line.trim();
+            if (!trimmed.includes('|')) return null;
+            const cells = [];
+            let cell = '';
+            let codeTicks = 0;
+            for (let index = 0; index < trimmed.length; index += 1) {
+                const character = trimmed[index];
+                if (character === '\\' && trimmed[index + 1] === '|') {
+                    cell += '|';
+                    index += 1;
+                    continue;
+                }
+                if (character === '`') {
+                    let end = index + 1;
+                    while (trimmed[end] === '`') end += 1;
+                    const tickCount = end - index;
+                    if (codeTicks === 0) codeTicks = tickCount;
+                    else if (codeTicks === tickCount) codeTicks = 0;
+                    cell += trimmed.slice(index, end);
+                    index = end - 1;
+                    continue;
+                }
+                if (character === '|' && codeTicks === 0) {
+                    cells.push(cell.trim());
+                    cell = '';
+                    continue;
+                }
+                cell += character;
+            }
+            cells.push(cell.trim());
+            if (trimmed.startsWith('|') && cells[0] === '') cells.shift();
+            if (trimmed.endsWith('|') && !trimmed.endsWith('\\|') && cells[cells.length - 1] === '') cells.pop();
+            return cells;
+        }
+
+        function isMarkdownTableSeparator(cells) {
+            return Array.isArray(cells) && cells.length > 0 &&
+                cells.every(function (cell) { return /^:?-+:?$/.test(cell); });
+        }
+
+        function expandCompactTableLine(line) {
+            const trimmed = line.trim();
+            if (!trimmed.startsWith('|') || !trimmed.endsWith('|')) return null;
+            const segments = trimmed.split(/\|\s+\|/);
+            if (segments.length < 3) return null;
+            const rows = segments.map(function (segment) {
+                const content = segment.trim();
+                if (!content) return '';
+                let row = content.startsWith('|') ? content : '|' + content;
+                if (!row.endsWith('|')) row += '|';
+                return row;
+            });
+            const header = splitMarkdownTableRow(rows[0]);
+            const separator = splitMarkdownTableRow(rows[1]);
+            if (!header || !separator || header.length !== separator.length || !isMarkdownTableSeparator(separator)) {
+                return null;
+            }
+            return rows;
+        }
+
+        function renderMarkdownTable(fragment, headerCells, separatorCells, rows) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'table-scroll';
+            const table = document.createElement('table');
+            table.className = 'markdown-table';
+            const head = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            const alignments = separatorCells.map(function (cell) {
+                if (/^:-+:$/.test(cell)) return 'center';
+                if (/^-+:$/.test(cell)) return 'right';
+                return 'left';
+            });
+
+            function appendCell(row, tagName, text, index) {
+                const cell = document.createElement(tagName);
+                if (tagName === 'th') cell.setAttribute('scope', 'col');
+                cell.style.textAlign = alignments[index];
+                appendInlineMarkdown(cell, text || '');
+                row.appendChild(cell);
+            }
+
+            headerCells.forEach(function (cell, index) {
+                appendCell(headerRow, 'th', cell, index);
+            });
+            head.appendChild(headerRow);
+            table.appendChild(head);
+            if (rows.length) {
+                const body = document.createElement('tbody');
+                rows.forEach(function (cells) {
+                    const row = document.createElement('tr');
+                    headerCells.forEach(function (_, index) {
+                        appendCell(row, 'td', cells[index], index);
+                    });
+                    body.appendChild(row);
+                });
+                table.appendChild(body);
+            }
+            wrapper.appendChild(table);
+            fragment.appendChild(wrapper);
+        }
+
         function renderMarkdown(container, markdown) {
             const fragment = document.createDocumentFragment();
             const lines = markdown.replace(/\r\n?/g, '\n').split('\n');
@@ -1087,7 +1382,7 @@
             }
 
             for (let index = 0; index < lines.length; index += 1) {
-                const line = lines[index];
+                let line = lines[index];
                 const fence = line.match(/^\s*(`{3,}|~{3,})\s*(.*?)\s*$/);
                 if (fence) {
                     flushBlocks();
@@ -1100,6 +1395,33 @@
                     }
                     const language = fence[2].trim().split(/\s+/)[0].slice(0, 40);
                     appendCodeBlock(codeLines, language);
+                    continue;
+                }
+
+                const compactRows = expandCompactTableLine(line);
+                if (compactRows) {
+                    lines.splice(index, 1, ...compactRows);
+                    line = lines[index];
+                }
+
+                const headerCells = splitMarkdownTableRow(line);
+                const separatorCells = index + 1 < lines.length
+                    ? splitMarkdownTableRow(lines[index + 1])
+                    : null;
+                if (headerCells && separatorCells &&
+                    headerCells.length === separatorCells.length &&
+                    isMarkdownTableSeparator(separatorCells)) {
+                    flushBlocks();
+                    const rows = [];
+                    let rowIndex = index + 2;
+                    while (rowIndex < lines.length) {
+                        const cells = splitMarkdownTableRow(lines[rowIndex]);
+                        if (!cells || !cells.length) break;
+                        rows.push(cells);
+                        rowIndex += 1;
+                    }
+                    renderMarkdownTable(fragment, headerCells, separatorCells, rows);
+                    index = rowIndex - 1;
                     continue;
                 }
 
@@ -1226,38 +1548,41 @@
         }
 
         async function readReplyStream(response, onDelta) {
-            if (!response.body) throw new Error('Trình duyệt không hỗ trợ đọc phản hồi streaming.');
+            if (!response.body) throw new Error('Trình duyệt không hỗ trợ đọc phản hồi streaming từ Groq.');
             const reader = response.body.getReader();
             const decoder = new TextDecoder('utf-8', { fatal: true });
             let buffer = '';
             let finished = false;
 
             function readLine(line) {
-                if (!line.trim()) return;
+                line = line.replace(/\r$/, '');
+                if (!line || line[0] === ':' || !line.startsWith('data:')) return;
+                const dataText = line.slice(5).trimStart();
+                if (dataText === '[DONE]') {
+                    finished = true;
+                    return;
+                }
                 let data;
                 try {
-                    data = JSON.parse(line);
+                    data = JSON.parse(dataText);
                 } catch {
-                    throw new Error('Phản hồi streaming từ Ollama không đúng định dạng JSON.');
+                    throw new Error('Phản hồi streaming từ Groq không đúng định dạng JSON.');
                 }
                 if (!data || typeof data !== 'object' || data.error) {
-                    throw new Error(data && data.error ? data.error : 'Phản hồi streaming từ Ollama không hợp lệ.');
+                    throw new Error(data && data.error ? data.error.message || data.error : 'Phản hồi streaming từ Groq không hợp lệ.');
                 }
-                if (typeof data.done !== 'boolean') {
-                    throw new Error('Phản hồi streaming từ Ollama không hợp lệ.');
+                if (!Array.isArray(data.choices)) {
+                    throw new Error('Phản hồi streaming từ Groq không hợp lệ.');
                 }
-                if (data.message !== undefined) {
-                    if (!data.message || typeof data.message !== 'object' ||
-                        (data.message.content !== undefined && typeof data.message.content !== 'string') ||
-                        (data.message.thinking !== undefined && typeof data.message.thinking !== 'string') ||
-                        (data.message.content === undefined && data.message.thinking === undefined)) {
-                        throw new Error('Phản hồi streaming từ Ollama không hợp lệ.');
-                    }
-                    onDelta(data.message.thinking || '', data.message.content || '');
-                } else if (!data.done) {
-                    throw new Error('Phản hồi streaming từ Ollama không hợp lệ.');
+                if (!data.choices.length) return;
+                const delta = data.choices[0] && data.choices[0].delta;
+                if (!delta || typeof delta !== 'object') return;
+                const content = delta.content == null ? '' : delta.content;
+                const thinking = delta.reasoning == null ? '' : delta.reasoning;
+                if (typeof content !== 'string' || typeof thinking !== 'string') {
+                    throw new Error('Phản hồi streaming từ Groq không hợp lệ.');
                 }
-                finished = data.done;
+                if (content || thinking) onDelta(thinking, content);
             }
 
             try {
@@ -1271,8 +1596,8 @@
                         readLine(line);
                     }
                     if (result.done) {
-                        if (!finished && buffer.trim()) readLine(buffer);
-                        if (!finished) throw new Error('Kết nối bị ngắt trước khi AI hoàn tất phản hồi.');
+                        if (!finished && buffer) readLine(buffer);
+                        if (!finished) throw new Error('Kết nối bị ngắt trước khi Groq hoàn tất phản hồi.');
                     }
                 }
             } finally {
@@ -1532,6 +1857,7 @@
             if (removesActive) {
                 attachedImage = null;
                 renderImagePreview();
+                updateGroqModelNote(groqModel);
                 const replacement = newConversation();
                 conversations.push(replacement);
                 activeConversationId = replacement.id;
@@ -1542,6 +1868,7 @@
                 selectedConversationIds = previousSelectedIds;
                 attachedImage = previousAttachedImage;
                 renderImagePreview();
+                updateGroqModelNote(groqModel);
                 updateHistoryActions();
                 return false;
             }
@@ -1588,12 +1915,14 @@
             selectedConversationIds.clear();
             attachedImage = null;
             renderImagePreview();
+            updateGroqModelNote(groqModel);
             if (!persistState()) {
                 conversations = previousConversations;
                 activeConversationId = previousActiveId;
                 selectedConversationIds = previousSelectedIds;
                 attachedImage = previousAttachedImage;
                 renderImagePreview();
+                updateGroqModelNote(groqModel);
                 updateHistoryActions();
                 return;
             }
@@ -1671,6 +2000,7 @@
             if (!attachedImage || isSending || isReadingImage) return;
             attachedImage = null;
             renderImagePreview();
+            updateGroqModelNote(groqModel);
             if (!persistState('Không thể lưu việc gỡ ảnh. Ảnh có thể xuất hiện lại sau khi tải lại trang.')) {
                 updateComposer();
                 return;
@@ -1711,6 +2041,29 @@
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Escape' && !sidebarBackdrop.hidden) setSidebarOpen(false, true);
         });
+        toggleApiKeyButton.addEventListener('click', function () {
+            const showKey = apiKeyInput.type === 'password';
+            apiKeyInput.type = showKey ? 'text' : 'password';
+            toggleApiKeyButton.textContent = showKey ? 'Ẩn' : 'Hiện';
+            toggleApiKeyButton.setAttribute('aria-label', showKey ? 'Ẩn API key' : 'Hiện API key');
+        });
+        apiKeyInput.addEventListener('input', function () {
+            groqSettingsStatus.textContent = apiKeyInput.value.trim() !== groqApiKey ||
+                groqModelSelect.value !== groqModel
+                ? 'Có thay đổi chưa lưu.'
+                : '';
+        });
+        groqModelSelect.addEventListener('change', function () {
+            updateGroqModelNote(groqModelSelect.value);
+            groqSettingsStatus.textContent = apiKeyInput.value.trim() !== groqApiKey ||
+                groqModelSelect.value !== groqModel
+                ? 'Có thay đổi chưa lưu.'
+                : '';
+        });
+        saveGroqSettingsButton.addEventListener('click', saveGroqSettings);
+        clearGroqKeyButton.addEventListener('click', function () {
+            if (clearGroqApiKey()) notify('message', 'Đã xóa API key khỏi cấu hình trình duyệt.');
+        });
 
         document.getElementById('composer').addEventListener('submit', async function (event) {
             event.preventDefault();
@@ -1719,6 +2072,18 @@
             const prompt = userText || (imageToSend ? 'Hãy phân tích hình ảnh này.' : '');
             const conversation = getActiveConversation();
             if (isSending || !prompt || !conversation) return;
+            if (!groqApiKey) {
+                apiSettings.open = true;
+                groqSettingsStatus.textContent = 'Hãy nhập và lưu Groq API key để gửi tin nhắn.';
+                apiKeyInput.focus();
+                return;
+            }
+            if (imageToSend && !supportsGroqVision(groqModel)) {
+                apiSettings.open = true;
+                groqModelSelect.focus();
+                notify('warning', 'Hãy chọn qwen/qwen3.8-27b để phân tích ảnh.');
+                return;
+            }
 
             const controller = new AbortController();
             activeController = controller;
@@ -1730,7 +2095,7 @@
             newChatButtons.forEach(function (button) { button.disabled = true; });
             conversationList.querySelectorAll('button').forEach(function (button) { button.disabled = true; });
             sendButton.setAttribute('aria-label', 'Đang chờ AI phản hồi');
-            setAccessibleStatus('Đang gửi tin nhắn đến Gemma…');
+            setAccessibleStatus('Đang gửi tin nhắn đến Groq…');
             const reply = createMessage('assistant', '');
             reply.message.setAttribute('aria-busy', 'true');
             const showThinking = thinkingControl.value === 'true';
@@ -1746,16 +2111,23 @@
             let displayedThinking = '';
             let hasResponseContent = false;
             try {
-                const response = await fetch('https://matthew-murdock.leopon-uaru.ts.net/api/chat', {
+                const requestBody = {
+                    model: groqModel,
+                    messages: buildRequestMessages(conversation, prompt, imageToSend),
+                    stream: true
+                };
+                if (supportsGroqReasoning(groqModel)) {
+                    requestBody.reasoning_effort = showThinking ? 'medium' : 'none';
+                    requestBody.reasoning_format = showThinking ? 'parsed' : 'hidden';
+                }
+                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                     method: 'POST',
                     signal: controller.signal,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        model: modelName,
-                        messages: buildRequestMessages(conversation, prompt, imageToSend),
-                        stream: true,
-                        think: showThinking
-                    })
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + groqApiKey
+                    },
+                    body: JSON.stringify(requestBody)
                 });
 
                 if (!response.ok) {
@@ -1764,9 +2136,12 @@
                         data = JSON.parse(await response.text());
                     } catch (error) {
                         if (!(error instanceof SyntaxError)) throw error;
-                        throw new Error('Ollama trả về lỗi HTTP ' + response.status + '.');
+                        throw new Error('Groq trả về lỗi HTTP ' + response.status + '.');
                     }
-                    throw new Error(data && data.error ? data.error : 'Lỗi gọi API (HTTP ' + response.status + ').');
+                    const apiError = data && data.error;
+                    throw new Error(apiError
+                        ? typeof apiError === 'string' ? apiError : apiError.message || 'Lỗi gọi API (HTTP ' + response.status + ').'
+                        : 'Lỗi gọi API (HTTP ' + response.status + ').');
                 }
 
                 await readReplyStream(response, function (thinking, content) {
@@ -1792,7 +2167,7 @@
                     if (nearBottom) scrollToLatest();
                 });
                 controller.signal.throwIfAborted();
-                if (!responseText.trim()) throw new Error('Ollama trả về phản hồi trống.');
+                if (!responseText.trim()) throw new Error('Groq trả về phản hồi trống.');
 
                 const savedUserMessage = { role: 'user', content: prompt };
                 if (imageToSend) {
@@ -1801,6 +2176,7 @@
                         attachedImage = null;
                         imageInput.value = '';
                         renderImagePreview();
+                        updateGroqModelNote(groqModel);
                     }
                 }
                 const savedAssistantMessage = { role: 'assistant', content: responseText };
@@ -1816,7 +2192,7 @@
                 if (!persisted) {
                     setAccessibleStatus('Phản hồi hoàn tất nhưng lịch sử chưa được lưu do lỗi bộ nhớ.');
                 } else if (noThinking) {
-                    notify('warning', 'Gemma không gửi dữ liệu suy nghĩ trong phản hồi. Khả năng này phụ thuộc vào mô hình và phiên bản Ollama.');
+                    notify('warning', 'Groq không gửi dữ liệu suy nghĩ trong phản hồi.');
                 } else {
                     setAccessibleStatus('');
                 }
@@ -1827,7 +2203,7 @@
                     notify('warning', 'Đã dừng · Tin nhắn chưa được thêm vào lịch sử');
                 } else {
                     const detail = error instanceof TypeError
-                        ? 'Không thể đọc phản hồi từ Ollama. Hãy kiểm tra Ollama đang chạy tại https://matthew-murdock.leopon-uaru.ts.net và cho phép truy cập từ trang này.'
+                        ? 'Không thể kết nối Groq API. Hãy kiểm tra mạng, CORS của trình duyệt và mở ứng dụng qua HTTP(S).'
                         : error.message;
                     if (!messageInput.value) messageInput.value = userText;
                     notify('error', 'Gửi không thành công · ' + detail);
@@ -1846,16 +2222,27 @@
             }
         });
 
+        const loadedGroqSettings = loadGroqSettings();
+        groqApiKey = loadedGroqSettings.apiKey;
+        groqModel = loadedGroqSettings.model;
+        apiKeyInput.value = groqApiKey;
+        groqModelSelect.value = groqModel;
+        activeGroqModel.textContent = groqModel;
+        apiSettings.open = !groqApiKey;
+        if (loadedGroqSettings.message) groqSettingsStatus.textContent = loadedGroqSettings.message;
+        updateGroqModelNote(groqModel);
+
         const loadedState = loadState();
         conversations = loadedState.conversations;
         activeConversationId = loadedState.activeId || conversations[0].id;
         attachedImage = loadedState.draftImage || null;
+        updateGroqModelNote(groqModel);
         if (loadedState.message) notify(loadedState.messageType || 'error', loadedState.message);
         renderImagePreview();
         renderConversation();
         renderConversationList();
         if (loadedState.shouldSave && persistState() && loadedState.modelMigrated) {
-            notify('message', 'Cấu hình mô hình cũ đã được chuyển sang gpt-oss:20b.');
+            notify('message', 'Cấu hình mô hình cũ đã được chuyển sang Groq API.');
         }
         updateComposer();
         updateScrollNavigation();
