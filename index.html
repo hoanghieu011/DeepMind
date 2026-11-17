@@ -231,6 +231,7 @@
         .user-image { display: block; max-width: min(100%, 320px); max-height: 280px; object-fit: contain; border-radius: 12px; margin-top: 8px; }
         .thinking-control { display: inline-flex; align-items: center; gap: 8px; color: #456a73; font-size: 12px; }
         .thinking-control select { border: 1px solid #bdd5d0; border-radius: 8px; padding: 6px 8px; background: #edf5ef; color: #294f5b; }
+        .reasoning-support-note { flex-basis: 100%; color: #a35b36; font-size: 10px; line-height: 1.4; }
         #send { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; border: 0; border-radius: 13px; background: linear-gradient(145deg, #0b8798, #064f67); color: white; box-shadow: 0 5px 12px #0874873d; }
         #send:hover:not(:disabled) { background: linear-gradient(145deg, #087487, #043f57); }
         #send:disabled { background: #d2e0dc; color: #627b7e; box-shadow: none; }
@@ -358,6 +359,7 @@
         .image-preview-name { color: #c0d2cf; }
         .thinking-control { color: #bed2cf; }
         .thinking-control select { border-color: #45656b; background: #1a3942; color: #edf5f2; }
+        .reasoning-support-note { color: #f0c878; }
         #send { background: linear-gradient(145deg, #0d8292, #07546c); box-shadow: 0 5px 12px #00000045; }
         #send:hover:not(:disabled) { background: linear-gradient(145deg, #1597a4, #09647a); }
         #send:disabled { background: #29434a; color: #a5b8b7; }
@@ -481,12 +483,14 @@
                         <div class="composer-bottom">
                             <div class="composer-options">
                                 <span id="request-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></span>
-                                <label class="thinking-control" for="thinking"><span>Suy nghĩ</span>
-                                    <select id="thinking" aria-label="Chế độ suy nghĩ">
-                                        <option value="false" selected>Tắt</option>
-                                        <option value="true">Bật</option>
+                                <label class="thinking-control" for="reasoning-effort"><span>Mức suy luận</span>
+                                    <select id="reasoning-effort" aria-label="Mức suy luận">
+                                        <option value="low">Thấp · low</option>
+                                        <option value="medium" selected>Vừa · medium</option>
+                                        <option value="high">Cao · high</option>
                                     </select>
                                 </label>
+                                <span class="reasoning-support-note" id="reasoning-support-note" role="status" aria-live="polite" hidden></span>
                                 <div class="attachment-tools">
                                     <input class="image-input" id="image-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" aria-label="Chọn ảnh để phân tích">
                                     <button class="attach-button" id="attach-image" type="button" aria-label="Đính kèm ảnh để phân tích" aria-controls="image-input">
@@ -556,7 +560,8 @@
         const groqSettingsStatus = document.getElementById('groq-settings-status');
         const saveGroqSettingsButton = document.getElementById('save-groq-settings');
         const clearGroqKeyButton = document.getElementById('clear-groq-key');
-        const thinkingControl = document.getElementById('thinking');
+        const reasoningControl = document.getElementById('reasoning-effort');
+        const reasoningSupportNote = document.getElementById('reasoning-support-note');
         const imageInput = document.getElementById('image-input');
         const attachImageButton = document.getElementById('attach-image');
         const removeImageButton = document.getElementById('remove-image');
@@ -567,6 +572,8 @@
         const storageKey = 'qwen-local-chat-state';
         const groqSettingsStorageKey = 'deepmind-groq-settings';
         const defaultGroqModel = 'openai/gpt-oss-120b';
+        const defaultGroqReasoningEffort = 'medium';
+        const groqReasoningEfforts = new Set(['low', 'medium', 'high']);
         const availableGroqModels = new Set([
             'openai/gpt-oss-120b',
             'openai/gpt-oss-20b',
@@ -579,6 +586,7 @@
         const modelName = 'groq-cloud';
         let groqApiKey = '';
         let groqModel = defaultGroqModel;
+        let groqReasoningEffort = defaultGroqReasoningEffort;
         let isSending = false;
         let isReadingImage = false;
         let activeController = null;
@@ -624,25 +632,69 @@
         function loadGroqSettings() {
             try {
                 const saved = localStorage.getItem(groqSettingsStorageKey);
-                if (saved === null) return { apiKey: '', model: defaultGroqModel, message: '' };
+                if (saved === null) {
+                    return {
+                        apiKey: '',
+                        model: defaultGroqModel,
+                        reasoningEffort: defaultGroqReasoningEffort,
+                        message: ''
+                    };
+                }
                 const parsed = JSON.parse(saved);
                 if (!parsed || typeof parsed !== 'object') {
-                    return { apiKey: '', model: defaultGroqModel, message: 'Cấu hình Groq đã lưu không hợp lệ; hãy nhập lại API key.' };
+                    return {
+                        apiKey: '',
+                        model: defaultGroqModel,
+                        reasoningEffort: defaultGroqReasoningEffort,
+                        message: 'Cấu hình Groq đã lưu không hợp lệ; hãy nhập lại API key.'
+                    };
                 }
+                const hasInvalidReasoningEffort = Object.prototype.hasOwnProperty.call(parsed, 'reasoningEffort') &&
+                    !groqReasoningEfforts.has(parsed.reasoningEffort);
                 return {
                     apiKey: typeof parsed.apiKey === 'string' ? parsed.apiKey : '',
                     model: availableGroqModels.has(parsed.model) ? parsed.model : defaultGroqModel,
-                    message: typeof parsed.apiKey === 'string' ? '' : 'Không thể đọc API key đã lưu; hãy nhập lại.'
+                    reasoningEffort: groqReasoningEfforts.has(parsed.reasoningEffort)
+                        ? parsed.reasoningEffort
+                        : defaultGroqReasoningEffort,
+                    message: typeof parsed.apiKey !== 'string'
+                        ? 'Không thể đọc API key đã lưu; hãy nhập lại.'
+                        : hasInvalidReasoningEffort
+                            ? 'Mức suy luận đã lưu không hợp lệ; đã chuyển về medium.'
+                            : ''
                 };
             } catch (error) {
                 return {
                     apiKey: '',
                     model: defaultGroqModel,
+                    reasoningEffort: defaultGroqReasoningEffort,
                     message: error instanceof SyntaxError
                         ? 'Cấu hình Groq đã lưu bị hỏng; hãy nhập lại API key.'
                         : 'Không thể truy cập localStorage để đọc cấu hình Groq.'
                 };
             }
+        }
+
+        function persistGroqReasoningEffort(effort) {
+            if (!groqReasoningEfforts.has(effort)) {
+                groqSettingsStatus.textContent = 'Mức suy luận không hợp lệ.';
+                reasoningControl.value = groqReasoningEffort;
+                return false;
+            }
+            groqReasoningEffort = effort;
+            try {
+                localStorage.setItem(groqSettingsStorageKey, JSON.stringify({
+                    apiKey: groqApiKey,
+                    model: groqModel,
+                    reasoningEffort: groqReasoningEffort
+                }));
+            } catch {
+                groqSettingsStatus.textContent = 'Mức suy luận chỉ áp dụng trong phiên này; không thể lưu vào localStorage.';
+                notify('warning', 'Không thể lưu mức suy luận trong localStorage của trình duyệt.');
+                return false;
+            }
+            groqSettingsStatus.textContent = 'Đã lưu mức suy luận ' + groqReasoningEffort + '.';
+            return true;
         }
 
         function updateGroqModelNote(model) {
@@ -651,8 +703,8 @@
                 ? 'Model này hỗ trợ phân tích ảnh.'
                 : 'Phân tích ảnh cần chọn qwen/qwen3.8-27b.');
             details.push(supportsGroqReasoning(model)
-                ? 'Có thể bật chế độ suy nghĩ.'
-                : 'Model này không hỗ trợ chế độ suy nghĩ.');
+                ? 'Model hỗ trợ mức suy luận low, medium và high.'
+                : 'Model không hỗ trợ mức suy luận; request sẽ dùng mặc định của model.');
             if (attachedImage && !supportsGroqVision(model)) {
                 details.push('Ảnh đang đính kèm cần model Qwen để gửi.');
             }
@@ -671,8 +723,17 @@
                 groqSettingsStatus.textContent = 'Model đã chọn không hợp lệ.';
                 return false;
             }
+            const reasoningEffort = reasoningControl.value;
+            if (!groqReasoningEfforts.has(reasoningEffort)) {
+                groqSettingsStatus.textContent = 'Mức suy luận đã chọn không hợp lệ.';
+                return false;
+            }
             try {
-                localStorage.setItem(groqSettingsStorageKey, JSON.stringify({ apiKey: apiKey, model: model }));
+                localStorage.setItem(groqSettingsStorageKey, JSON.stringify({
+                    apiKey: apiKey,
+                    model: model,
+                    reasoningEffort: reasoningEffort
+                }));
             } catch (error) {
                 groqSettingsStatus.textContent = error && error.name === 'QuotaExceededError'
                     ? 'Bộ nhớ trình duyệt đã đầy; không thể lưu cấu hình.'
@@ -681,10 +742,11 @@
             }
             groqApiKey = apiKey;
             groqModel = model;
+            groqReasoningEffort = reasoningEffort;
             activeGroqModel.textContent = groqModel;
             updateGroqModelNote(groqModel);
             apiSettings.open = false;
-            groqSettingsStatus.textContent = 'Đã lưu model và API key trên thiết bị này.';
+            groqSettingsStatus.textContent = 'Đã lưu API key, model và mức suy luận trên thiết bị này.';
             updateComposer();
             notify('success', 'Đã lưu cấu hình Groq trên thiết bị này.');
             return true;
@@ -692,7 +754,11 @@
 
         function clearGroqApiKey() {
             try {
-                localStorage.setItem(groqSettingsStorageKey, JSON.stringify({ apiKey: '', model: groqModel }));
+                localStorage.setItem(groqSettingsStorageKey, JSON.stringify({
+                    apiKey: '',
+                    model: groqModel,
+                    reasoningEffort: groqReasoningEffort
+                }));
             } catch {
                 groqSettingsStatus.textContent = 'Không thể xóa key đã lưu khỏi localStorage.';
                 return false;
@@ -1032,7 +1098,12 @@
                 : 'Chọn qwen/qwen3.8-27b trong Cấu hình Groq để phân tích ảnh';
             removeImageButton.disabled = isSending || isReadingImage;
             imageInput.disabled = isSending || isReadingImage || !supportsGroqVision(groqModel);
-            thinkingControl.disabled = isSending || !supportsGroqReasoning(groqModel);
+            const supportsReasoning = supportsGroqReasoning(groqModel);
+            reasoningControl.disabled = isSending || !supportsReasoning;
+            reasoningSupportNote.hidden = supportsReasoning;
+            reasoningSupportNote.textContent = supportsReasoning
+                ? ''
+                : 'Model hiện tại không hỗ trợ reasoning_effort; request dùng mặc định. Chọn GPT OSS hoặc Qwen để chỉnh mức.';
             updateHistoryActions();
         }
 
@@ -2060,6 +2131,9 @@
                 ? 'Có thay đổi chưa lưu.'
                 : '';
         });
+        reasoningControl.addEventListener('change', function () {
+            persistGroqReasoningEffort(reasoningControl.value);
+        });
         saveGroqSettingsButton.addEventListener('click', saveGroqSettings);
         clearGroqKeyButton.addEventListener('click', function () {
             if (clearGroqApiKey()) notify('message', 'Đã xóa API key khỏi cấu hình trình duyệt.');
@@ -2098,7 +2172,6 @@
             setAccessibleStatus('Đang gửi tin nhắn đến Groq…');
             const reply = createMessage('assistant', '');
             reply.message.setAttribute('aria-busy', 'true');
-            const showThinking = thinkingControl.value === 'true';
             const typing = document.createElement('div');
             typing.className = 'typing';
             typing.innerHTML = '<span class="typing-dots" aria-hidden="true"><span></span><span></span><span></span></span><span>AI đang nhập tin nhắn…</span>';
@@ -2117,8 +2190,8 @@
                     stream: true
                 };
                 if (supportsGroqReasoning(groqModel)) {
-                    requestBody.reasoning_effort = showThinking ? 'medium' : 'none';
-                    requestBody.reasoning_format = showThinking ? 'parsed' : 'hidden';
+                    requestBody.reasoning_effort = groqReasoningEffort;
+                    requestBody.reasoning_format = 'parsed';
                 }
                 const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                     method: 'POST',
@@ -2152,7 +2225,7 @@
                     const parsedContent = extractThinking(rawContentText);
                     responseText = parsedContent.answer;
                     displayedThinking = explicitThinking || parsedContent.thinking;
-                    if (showThinking && displayedThinking) {
+                    if (displayedThinking) {
                         if (!reply.thinkingParts) reply.thinkingParts = createThinkingBlock(reply.content, reply.answer);
                         renderBoldText(reply.thinkingParts.text, displayedThinking);
                     }
@@ -2180,7 +2253,7 @@
                     }
                 }
                 const savedAssistantMessage = { role: 'assistant', content: responseText };
-                if (showThinking && displayedThinking) savedAssistantMessage.thinking = displayedThinking;
+                if (displayedThinking) savedAssistantMessage.thinking = displayedThinking;
                 conversation.messages.push(savedUserMessage, savedAssistantMessage);
                 if (conversation.messages.length === 2) {
                     conversation.title = prompt.slice(0, 42);
@@ -2188,11 +2261,8 @@
                 conversation.updatedAt = Date.now();
                 renderConversationList();
                 const persisted = persistState();
-                const noThinking = showThinking && !displayedThinking.trim();
                 if (!persisted) {
                     setAccessibleStatus('Phản hồi hoàn tất nhưng lịch sử chưa được lưu do lỗi bộ nhớ.');
-                } else if (noThinking) {
-                    notify('warning', 'Groq không gửi dữ liệu suy nghĩ trong phản hồi.');
                 } else {
                     setAccessibleStatus('');
                 }
@@ -2225,8 +2295,10 @@
         const loadedGroqSettings = loadGroqSettings();
         groqApiKey = loadedGroqSettings.apiKey;
         groqModel = loadedGroqSettings.model;
+        groqReasoningEffort = loadedGroqSettings.reasoningEffort || defaultGroqReasoningEffort;
         apiKeyInput.value = groqApiKey;
         groqModelSelect.value = groqModel;
+        reasoningControl.value = groqReasoningEffort;
         activeGroqModel.textContent = groqModel;
         apiSettings.open = !groqApiKey;
         if (loadedGroqSettings.message) groqSettingsStatus.textContent = loadedGroqSettings.message;

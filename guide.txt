@@ -6,7 +6,9 @@ Cách dùng
 3. Nhập API key từ Groq Cloud Console, chọn model và nhấn “Lưu cấu hình”.
 4. Gửi tin nhắn. Model mặc định là openai/gpt-oss-120b.
 
-API key và model được lưu trong localStorage của trình duyệt và tự nạp lại lần sau. Nút “Xóa key” gỡ key khỏi cấu hình đã lưu. Có thể đổi model trong mục cấu hình; các model cần có trong tài khoản Groq và còn được Groq hỗ trợ. Phân tích ảnh hiện chỉ bật với qwen/qwen3.8-27b.
+API key, model và mức suy luận được lưu trong localStorage của trình duyệt và tự nạp lại lần sau. Mức suy luận có ba lựa chọn low, medium và high; mặc định là medium. Nút “Xóa key” gỡ key khỏi cấu hình đã lưu. Có thể đổi model trong mục cấu hình; các model cần có trong tài khoản Groq và còn được Groq hỗ trợ. Phân tích ảnh hiện chỉ bật với qwen/qwen3.8-27b.
+
+Các model openai/gpt-oss-120b, openai/gpt-oss-20b và qwen/qwen3.8-27b hỗ trợ reasoning_effort low/medium/high theo tài liệu Groq. llama-3.3-70b-versatile không nằm trong danh sách model hỗ trợ tham số này: khi chọn model đó, selector bị khóa, giao diện báo rõ và request không gửi reasoning_effort để tránh lỗi API.
 
 Bảo mật
 - API key nằm dạng văn bản trong localStorage và được gửi từ trình duyệt trong header Authorization. JavaScript chạy cùng origin, tiện ích có quyền truy cập, DevTools hoặc người dùng khác cùng hồ sơ trình duyệt có thể đọc key.
