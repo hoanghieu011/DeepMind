@@ -8,6 +8,8 @@ Cách dùng
 
 API key, model và mức suy luận được lưu trong localStorage của trình duyệt và tự nạp lại lần sau. Mức suy luận có ba lựa chọn low, medium và high; mặc định là medium. Nút “Xóa key” gỡ key khỏi cấu hình đã lưu. Có thể đổi model trong mục cấu hình; các model cần có trong tài khoản Groq và còn được Groq hỗ trợ. Phân tích ảnh hiện chỉ bật với qwen/qwen3.8-27b.
 
+Modal AI được hướng dẫn trả lời trực tiếp, ngắn gọn theo ngôn ngữ người dùng và nêu rõ khi không chắc chắn. Khi ước tính ngữ cảnh vượt khoảng 18.000 token, ứng dụng gửi các lượt cũ theo từng phần tới model hiện tại để tạo ghi chú tóm tắt; request tiếp theo dùng ghi chú này cùng các lượt gần nhất. Mốc token là ước tính bảo thủ, không phải số đếm chính xác từ tokenizer của từng model. Lịch sử đầy đủ vẫn hiển thị và lưu trên thiết bị; bản tóm tắt cũng được lưu cùng cuộc trò chuyện. Nếu một tin nhắn riêng lẻ quá dài để gửi an toàn, ứng dụng báo lỗi thay vì lặng lẽ bỏ nội dung.
+
 Các model openai/gpt-oss-120b, openai/gpt-oss-20b và qwen/qwen3.8-27b hỗ trợ reasoning_effort low/medium/high theo tài liệu Groq. llama-3.3-70b-versatile không nằm trong danh sách model hỗ trợ tham số này: khi chọn model đó, selector bị khóa, giao diện báo rõ và request không gửi reasoning_effort để tránh lỗi API.
 
 Bảo mật
